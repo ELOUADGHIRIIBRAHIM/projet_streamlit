@@ -3,30 +3,40 @@ import duckdb
 import io
 import pandas as pd
 
-st.write('HEllo World!')
+beverages = pd.read_csv(io.StringIO("""
+beverage,price
+Orange juice,2.5
+Expresso,2
+Tea,3"""))
+
+food_items = pd.read_csv(io.StringIO("""
+food_item,food_price
+Cookie juice,2.5
+Chocolatine,2
+Muffin,3"""))
+
+answer = """
+SELECT * FROM beverages
+CROSS JOIN food_items"""
+
+solution = duckdb.sql(answer).df()
 
 
-option = st.selectbox(
-    "Sur quelle truc voulez-vous travailler?",
-    ("Jointures","Groupby","Window functions"),
-    index=None,
-    placeholder="Sélectionner le truc"
-)
-st.write('Vous avez sélectionné', option)
-
-
-
-tab1, tab2, tab3 = st.tabs(["Cat","Dog","Owl"])
-df = pd.read_csv(io.StringIO("""a,b,c
-    1,2,3
-    7,9,7"""))
-with tab1:
-    query = st.text_area(label="entrez votre input")
+st.header("enter your code:")
+query = st.text_area(label="votre code SQL ici", key="user_input")
+if query:
     result = duckdb.sql(query).df()
-    st.write(f"Query entée : {query}")
     st.dataframe(result)
-with tab2:
-    st.header("A dog")
 
+
+tab2, tab3 = st.tabs(['Tables','Solution'])
+
+with tab2:
+    st.write('table: beverages')
+    st.dataframe(beverages)
+    st.write('table: food_items')
+    st.dataframe(food_items)
+    st.write("expected:")
+    st.dataframe(solution)
 with tab3:
-    st.header('lkada')
+    st.write(answer)
