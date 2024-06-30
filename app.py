@@ -5,6 +5,17 @@ import pandas as pd
 
 st.write('HEllo World!')
 
+
+option = st.selectbox(
+    "Sur quelle truc voulez-vous travailler?",
+    ("Jointures","Groupby","Window functions"),
+    index=None,
+    placeholder="Sélectionner le truc"
+)
+st.write('Vous avez sélectionné', option)
+
+
+
 tab1, tab2, tab3 = st.tabs(["Cat","Dog","Owl"])
 df = pd.read_csv(io.StringIO("""a,b,c
     1,2,3
